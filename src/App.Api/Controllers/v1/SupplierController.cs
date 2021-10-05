@@ -16,7 +16,7 @@ namespace App.Api.Controllers.v1
 {
     [Authorize]
     [ApiVersion("1.0")]
-    [Route("api/v:{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class SupplierController : MainController
     {
         private readonly ISupplierRepository _supplierRepository;
