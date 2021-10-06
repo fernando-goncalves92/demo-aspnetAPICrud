@@ -8,6 +8,7 @@ using App.Domain.Notifications.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,16 +24,19 @@ namespace App.Api.Controllers.v1
         private readonly IProductRepository _productRepository;
         private readonly IProductService _productService;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
         public ProductsController(
             IProductRepository productRepository,
             IProductService productService,
             INotifier notifier,
-            IMapper mapper) : base(notifier)
+            IMapper mapper,
+            ILogger<ProductsController> logger) : base(notifier)
         {
             _productRepository = productRepository;
             _productService = productService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]

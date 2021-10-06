@@ -1,4 +1,5 @@
 using App.Api.Configurations;
+using App.Api.Middlewares;
 using App.Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -54,6 +55,7 @@ namespace App.Api
             app.UseAuthorization();
             app.UseAuthentication();
             app.UseStaticFiles();
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

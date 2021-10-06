@@ -8,6 +8,7 @@ using App.Domain.Notifications.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,18 +24,21 @@ namespace App.Api.Controllers.v1
         private readonly ISupplierService _supplierService;
         private readonly IAddressRepository _addressRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
         public SupplierController(
             ISupplierRepository supplierRepository,
             ISupplierService supplierService,
             IAddressRepository addressRepository,
             INotifier notifier,
-            IMapper mapper) : base(notifier)
+            IMapper mapper,
+            ILogger<SupplierController> logger) : base(notifier)
         {
             _supplierRepository = supplierRepository;
             _supplierService = supplierService;
             _addressRepository = addressRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]

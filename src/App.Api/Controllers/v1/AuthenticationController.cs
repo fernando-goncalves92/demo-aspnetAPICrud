@@ -5,6 +5,7 @@ using App.Api.ViewModels.Authentication;
 using App.Domain.Notifications.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -23,16 +24,20 @@ namespace App.Api.Controllers.v1
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly TokenSettings _tokenSettings;
+        private readonly ILogger _logger;
 
-        public AuthenticationController(INotifier notifier,
+        public AuthenticationController(
+            INotifier notifier,
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            IOptions<TokenSettings> tokenSettings) : base(notifier)
+            IOptions<TokenSettings> tokenSettings,
+            ILogger<AuthenticationController> logger) : base(notifier)
         {
             _notifier = notifier;
             _signInManager = signInManager;
             _userManager = userManager;
             _tokenSettings = tokenSettings.Value;
+            _logger = logger;
         }
 
         [HttpPost("create-account")]
@@ -52,6 +57,8 @@ namespace App.Api.Controllers.v1
 
             if (result.Succeeded)
             {
+                _logger.LogInformation($"Novo usuário criado ({registerUserViewModel.Email})");
+
                 return CustomResponse(await GenerateJwt(registerUserViewModel.Email));
             }
 
@@ -73,6 +80,8 @@ namespace App.Api.Controllers.v1
 
             if (result.Succeeded)
             {
+                _logger.LogInformation($"Usuário logado na aplicação ({loginUserViewModel.Email})");
+
                 return CustomResponse(await GenerateJwt(loginUserViewModel.Email));
             }
 
