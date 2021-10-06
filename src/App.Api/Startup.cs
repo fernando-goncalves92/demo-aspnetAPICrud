@@ -34,7 +34,8 @@ namespace App.Api
             services.AddAutoMapper(typeof(Startup));
             services.AddApiConfig();
             services.AddSwaggerConfig();
-            services.AddDependencyInjection();            
+            services.AddDependencyInjection();
+            services.AddHealthCheckConfig(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
@@ -62,6 +63,7 @@ namespace App.Api
             });
 
             app.UseSwaggerConfig(provider);
+            app.UseHealthCheckConfig();
         }
     }
 }
